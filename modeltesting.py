@@ -18,7 +18,7 @@ class TestConversion(unittest.TestCase):
         # Assert
         self.assertEqual(actual_output, expected_output)
 
-    def test_get_response_edge_case(self):
+    def test_get_response_multiple_typos_case(self):
         # Arrange
         input_str = "wh t ae you d ing"
         expected_output = "what are you doing"
@@ -29,7 +29,7 @@ class TestConversion(unittest.TestCase):
         # Assert
         self.assertEqual(actual_output, expected_output)
 
-    def test_get_response_asl_confusion(self):
+    def test_get_response_confused_letters(self):
         # Arrange
         input_str = "m and n are oftem comfused in asl"
         expected_output = "m and n are often confused in asl"
