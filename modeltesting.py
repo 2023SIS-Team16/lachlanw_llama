@@ -5,7 +5,7 @@ import unittest
 class TestConversion(unittest.TestCase):
     
     def setUp(self):
-        self.model = Llama(model_path="./model/codellama-13b.Q2_K.gguf")
+        self.model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf")
 
     def test_get_response_normal_case(self):
         # Arrange

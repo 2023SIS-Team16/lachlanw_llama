@@ -2,7 +2,7 @@ import conversion
 import asyncio
 import websockets
 from llama_cpp import Llama
-model = Llama(model_path="./model/codellama-13b.Q2_K.gguf") #Replace with whatever model you are using
+model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf") #Replace with whatever model you are using
 
 async def req_handler(websocket, path):
     data = await websocket.recv()

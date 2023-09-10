@@ -1,11 +1,13 @@
 from difflib import SequenceMatcher
 
 def get_response(to_fix, model):
-    response = model(f"Q: What is the correct spelling of '{to_fix}' A:", stop=["Q:", "\n"], max_tokens=32, echo=True)
-    
+    response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}' A:", stop=["Q:", "\n"], max_tokens=32, echo=True)
+    #(+40) Q: What is the correct spelling of '{to_fix}' A:
+    #(+64) Q: Update the following sentence to fix any typos: '{to_fix}' A:
+
     result = response['choices'][0]['text']
 
-    end_index = len(to_fix) + 40 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
+    end_index = len(to_fix) + 114 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
     result = result[end_index:].strip()
     similarity_score = get_similarity(to_fix, result)
     print(to_fix)
