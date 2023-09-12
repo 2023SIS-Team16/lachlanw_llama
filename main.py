@@ -5,12 +5,17 @@ from llama_cpp import Llama
 model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf") #Replace with whatever model you are using
 
 async def req_handler(websocket, path):
-    data = await websocket.recv()
-    data = data[7:]
+    data = await websocket.recv() #Wait for a translation request
+    data = data[7:] #Filter out the request's preamble
     print(data)
     res = conversion.get_response(data, model)
     print(res)
-    await websocket.send(res)
+
+    #Check if the conversion passed or failed.
+    if res == data:
+        await websocket.send(f"FAIL: {res}")
+    else:
+        await websocket.send(f"PASS: {res}")
     
 #Running the server
 print("Server starting.")
