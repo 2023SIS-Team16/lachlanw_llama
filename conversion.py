@@ -1,6 +1,6 @@
 from difflib import SequenceMatcher
 
-def get_response(to_fix, model):
+def get_response(to_fix, model, keep_punctuation=False):
     response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:", stop=["is:", "\n"], max_tokens=32, echo=True)
     #(+40) Q: What is the correct spelling of '{to_fix}' A:
     #(+64) Q: Update the following sentence to fix any typos: '{to_fix}' A:
@@ -14,6 +14,11 @@ def get_response(to_fix, model):
     print(to_fix)
     print(result)
     print(similarity_score)
+
+    if(keep_punctuation == False):
+        result = result.lower()
+        result = ''.join(filter(filter_punctuation, result))
+
     if len(to_fix) * 1.5 < len(result) or len(to_fix) * 0.8 > len(result) or similarity_score < 0.65:
         return to_fix #Just return original string if the response dramatically alters the sentence's length
     else:
@@ -24,9 +29,9 @@ def get_similarity(original, fixed):
     print("Initial: " + fixed)
     original = original.lower()
     fixed = fixed.lower()
-    fixed = ''.join(filter(filter_puncuation, fixed))
+    fixed = ''.join(filter(filter_punctuation, fixed))
     print("Final: " + fixed)
     return SequenceMatcher(None, original, fixed.lower()).ratio()
 
-def filter_puncuation(char):
+def filter_punctuation(char):
     return char.isalpha() or char.isspace()
