@@ -23,6 +23,24 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False):
 
     result = result.strip() #Remove whitespace (' example ' => 'example')
 
+    #Saving grace to fix a single word that's incorrectly translated
+    #All but one word must be identical, and the new word must be of a substantially different length
+    to_fix_array = to_fix.split()
+    result_array = result.split()
+    errors = 0
+    if len(to_fix_array) == len(result_array):
+        for i in range(len(to_fix_array)):
+            if to_fix_array[i] != result_array[i]:
+                errors += 1
+            if errors > 1:
+                break
+
+            if len(result_array[i])*2 <= len(to_fix_array[i]) or len(result_array[i])*0.5 > len(to_fix_array[i]):
+                result_array[i] = to_fix_array[i]
+        if errors == 1:
+            result =" ".join(result_array)
+
+
     if len(to_fix) * 1.5 < len(result) or len(to_fix) * 0.8 > len(result) or similarity_score < 0.65:
         return to_fix #Just return original string if the response dramatically alters the sentence's length
     else:
