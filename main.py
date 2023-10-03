@@ -30,10 +30,13 @@ def parse_text():
     print(to_process)
 
     last_index = to_process.rfind(' ')
-    if last_index >= 15 and last_index != -1: #Cut off the text after the last space, if it exists and isn't three letters in
-        to_process = to_process[:last_index] #Cut off by the last space
-    elif diff < 85:
-        return response #Don't try to translate unless its getting too long
+
+    #Only try to cut out unfinished words if the request wants it
+    if data['truncate'] == True:
+        if last_index >= 15 and last_index != -1: #Cut off the text after the last space, if it exists and isn't three letters in
+            to_process = to_process[:last_index] #Cut off by the last space
+        elif diff < 85:
+            return response #Don't try to translate unless its getting too long
     
     response['index'] += len(to_process)
 
