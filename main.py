@@ -1,13 +1,15 @@
 import conversion
 from flask import Flask, request
 from llama_cpp import Llama
+import json
 model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf") #Replace with whatever model you are using
 app = Flask(__name__)
 
 @app.route("/parse_text")
 def parse_text():
     data = request.get_json()
-    
+    data = json.loads(data)
+
     print(data['text']) #data.text - The full text sent from the client
     print(data['index']) #data.resolved_index - All characters preceding this index have already been 'fixed' and returned
     diff = len(data['text']) - data['index']
