@@ -45,5 +45,35 @@ class TestConversion(unittest.TestCase):
     def test_get_response_no_spacing_2(self):
         self.compare_strings("thissentencehasnospaces", "this sentence has no spaces")
 
+    def test_get_response_homophones(self):
+        self.compare_strings("they're going two the store", "they're going to the store")
+
+    def test_get_response_homophones_2(self):
+        self.compare_strings("its a nice whether today", "it's a nice weather today")
+
+    def test_get_response_homophones_3(self):
+        self.compare_strings("you're advise was helpful", "your advice was helpful")
+
+    def test_get_response_missed_keys(self):
+        self.compare_strings("hats up", "what's up")
+
+    def test_get_response_missed_keys_2(self):
+        self.compare_strings("how dod you do that", "how did you do that")
+
+    def test_get_response_misplaced_space(self):
+        self.compare_strings("I lik e chocolate", "I like chocolate")
+
+    def test_get_response_double_typing(self):
+        self.compare_strings("I amm going home", "I am going home")
+
+    def test_get_response_uppercase_error(self):
+        self.compare_strings("i love pARIS in the springtime", "I love Paris in the springtime")
+
+    def test_get_response_word_order_mistake(self):
+        self.compare_strings("order the words wrong sometimes I", "sometimes I order the words wrong")
+
+    def test_get_response_dropped_vowel(self):
+        self.compare_strings("somtimes it happens", "sometimes it happens")
+
 if __name__ == '__main__':
     unittest.main()
