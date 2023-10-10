@@ -50,10 +50,6 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False):
 
     return result #Return fixed string
 
-def typo_fixes(text):
-    print("TEST")
-    response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:", stop=["is:", "\n"], max_tokens=32, echo=True)
-
 def get_similarity(original, fixed, enable_logging=False):
     #Converts both strings to lowercase, and removes puncuation to make the comparison 'fairer'
     if enable_logging:
