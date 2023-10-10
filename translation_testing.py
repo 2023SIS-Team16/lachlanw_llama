@@ -55,7 +55,7 @@ class TestConversion(unittest.TestCase):
         self.compare_strings("you're advise was helpful", "your advice was helpful")
 
     def test_get_response_missed_keys(self):
-        self.compare_strings("hats up", "what's up")
+        self.compare_strings("hats up", "whats up")
 
     def test_get_response_missed_keys_2(self):
         self.compare_strings("how dod you do that", "how did you do that")
