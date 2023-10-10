@@ -1,6 +1,6 @@
 from difflib import SequenceMatcher
 
-def get_response(to_fix, model, keep_punctuation=False, enable_logging=False):
+def get_response(to_fix, model, keep_punctuation=False, enable_logging=False, capitalise=False):
     response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:", stop=["is:", "\n"], max_tokens=32, echo=True)
 
     result = response['choices'][0]['text']
@@ -47,6 +47,13 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False):
     #Give up and return original if we can't get a proper translation
     if len(to_fix) * 1.5 < len(result) or len(to_fix) * 0.8 > len(result) or similarity_score < 0.65:
         result = to_fix #Just return original string if the response dramatically alters the sentence's length
+
+    result = result.lower()
+
+    if capitalise:
+        response = model(f"Q: Give the following sentence correct capitalization: '{to_fix}'. A: The sentence with correct capitalization is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+        end_index = len(to_fix) + 106 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
+        result = result[end_index:].strip()
 
     return result #Return fixed string
 
