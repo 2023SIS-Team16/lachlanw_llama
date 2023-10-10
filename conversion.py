@@ -40,11 +40,10 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False):
         if errors == 1:
             result =" ".join(result_array)
 
-
     if len(to_fix) * 1.5 < len(result) or len(to_fix) * 0.8 > len(result) or similarity_score < 0.65:
-        return to_fix #Just return original string if the response dramatically alters the sentence's length
-    else:
-        return result #Return fixed string
+        result = to_fix #Just return original string if the response dramatically alters the sentence's length
+    
+    return result #Return fixed string
     
 def get_similarity(original, fixed, enable_logging=False):
     #Converts both strings to lowercase, and removes puncuation to make the comparison 'fairer'
