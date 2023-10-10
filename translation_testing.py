@@ -12,7 +12,7 @@ class TestConversion(unittest.TestCase):
         cls.model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf")
 
     def compare_strings(self, input, expected):
-        output = conversion.get_response(input, self.model)
+        output = conversion.get_response(input, self.model, enable_logging=True)
         self.assertEqual(output, expected)
 
     def test_get_response_normal_case(self):
