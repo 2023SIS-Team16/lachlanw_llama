@@ -1,4 +1,6 @@
-import conversion
+import sys
+sys.path.append("..")
+from translator import conversion
 from llama_cpp import Llama
 import unittest
 
@@ -9,7 +11,7 @@ import unittest
 class TestConversion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf")
+        cls.model = Llama(model_path="../model/codellama-13b.Q5_K_M.gguf")
 
     def compare_strings(self, input, expected):
         output = conversion.get_response(input, self.model, enable_logging=True)
