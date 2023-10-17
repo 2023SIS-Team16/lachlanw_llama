@@ -1,4 +1,4 @@
-import conversion
+import translator.conversion as conversion
 from flask import Flask, request
 from llama_cpp import Llama
 import json
