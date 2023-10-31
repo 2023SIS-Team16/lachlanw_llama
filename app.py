@@ -49,3 +49,5 @@ def parse_text():
         response['status'] = True
     return response
 
+if __name__ == "__main__":
+    app.run(debug=True)
