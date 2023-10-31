@@ -1,12 +1,23 @@
 from difflib import SequenceMatcher
 
-def get_response(to_fix, model, keep_punctuation=False, enable_logging=False, capitalise=False):
-    response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+def get_response(to_fix, openai, keep_punctuation=False, enable_logging=False, capitalise=False):
 
-    result = response['choices'][0]['text']
+    #Replace with chatGPT
+    #response = model(f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+    content = f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:"
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo",
+        messages=[{
+            "role": "user",
+            "content": f"Q: Proofread the following sentence, without changing its structure, or making significant changes to words: '{to_fix}'. A: The correct form of this sentence is:"
+        }]
+    )
+    #print(response)
 
-    end_index = len(to_fix) + 153 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
-    result = result[end_index:].strip()
+    result = response['choices'][0]['message']['content']
+    #print("Result:")
+    #print(result)
+    
     similarity_score = get_similarity(to_fix, result)
 
     #Enable Logging
@@ -21,6 +32,8 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False, ca
         result = ''.join(filter(filter_punctuation, result))
 
     result = result.strip() #Remove whitespace (' example ' => 'example')
+
+    return result
 
     #Saving grace to fix a single word that's incorrectly translated
     #All but one word must be identical, and the new word must be of a substantially different length
@@ -41,7 +54,8 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False, ca
 
     #Try the conversion again with an adjusted prompt if not good enough
     if is_similar_enough(to_fix, result, enable_logging=enable_logging):
-        response = model(f"Q: Fix the typos in the following sentence: '{to_fix}'. A: The sentence without typos is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+        #response = model(f"Q: Fix the typos in the following sentence: '{to_fix}'. A: The sentence without typos is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+        response = "Placeholder"
         end_index = len(to_fix) + 81 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
         result = result[end_index:].strip()
         similarity_score = get_similarity(to_fix, result)
@@ -58,7 +72,9 @@ def get_response(to_fix, model, keep_punctuation=False, enable_logging=False, ca
     return result #Return fixed string
 
 def capitalise(to_fix, model):
-    response = model(f"Q: Give the following sentence correct capitalization: '{to_fix}'. A: The sentence with correct capitalization is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+    #response = model(f"Q: Give the following sentence correct capitalization: '{to_fix}'. A: The sentence with correct capitalization is:", stop=["is:", "\n"], max_tokens=32, echo=True)
+    response = "Placeholder"
+
     end_index = len(to_fix) + 106 #NOTE: To update this if the prompt is changed, subtract 8 ({to_fix}) from the new string's length
     result = response[end_index:].strip()
     return result

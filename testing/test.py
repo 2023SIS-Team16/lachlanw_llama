@@ -4,6 +4,17 @@ from translator import conversion
 from llama_cpp import Llama
 import unittest
 
+import translator.conversion as conversion
+from flask import Flask, request
+from llama_cpp import Llama
+import json
+import os
+from dotenv import load_dotenv
+import openai
+app = Flask(__name__)
+import time
+
+
 """ def compare_strings(unittest, input, expected):
     output = conversion.get_response(input, model)
     unittest.assertEqual(output, expected) """
@@ -11,14 +22,20 @@ import unittest
 class TestConversion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = Llama(model_path="../model/codellama-13b.Q5_K_M.gguf")
+        load_dotenv()
+        openai.api_key = os.getenv("OPENAI_API_KEY")
+        cls.model = openai
 
     def compare_strings(self, input, expected):
-        output = conversion.get_response(input, self.model, enable_logging=True)
+        print(f"Input: {input}")
+        print(f"Expected: {expected}")
+        output = conversion.get_response(input, self.model, enable_logging=False)
+        print(f"Output: {output}")
+        time.sleep(10)
         self.assertEqual(output, expected)
 
     def test_get_response_normal_case(self):
-        self.compare_strings("hmllo there", "hello there")
+        self.compare_strings("hxllo there", "hello there")
         
     def test_get_response_normal_case_2(self):
         self.compare_strings("how afe you", "how are you")
@@ -72,7 +89,7 @@ class TestConversion(unittest.TestCase):
         self.compare_strings("i love pARIS in the springtime", "i love paris in the springtime")
 
     def test_get_response_dropped_vowel(self):
-        self.compare_strings("somtimes it happens", "sometimes it happens")
+        self.compare_strings("somtimes it happens", "sometimes it happens")  
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,8 +2,12 @@ import translator.conversion as conversion
 from flask import Flask, request
 from llama_cpp import Llama
 import json
-model = Llama(model_path="./model/codellama-13b.Q5_K_M.gguf") #Replace with whatever model you are using
+import os
+from dotenv import load_dotenv
+import openai
 app = Flask(__name__)
+load_dotenv()
+openai.my_api_key = os.getenv("CHATGPT_KEY")
 
 @app.route("/parse_text")
 def parse_text():
@@ -40,7 +44,7 @@ def parse_text():
     
     response['index'] += len(to_process)
 
-    processed = conversion.get_response(to_process, model, enable_logging=True)
+    processed = conversion.get_response(to_process, openai, enable_logging=True)
     print(processed)
     response['text'] = processed
     if to_process == processed:
