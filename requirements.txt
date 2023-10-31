@@ -1,2 +1,4 @@
 flask
 llama-cpp-python
+python-dotenv
+openai
